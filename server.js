@@ -3,6 +3,7 @@ const app = express()
 const bodyParser = require('body-parser')
 
 const cors = require('cors')
+var router = express.Router();
 
 const mongoose = require('mongoose')
 mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
@@ -44,8 +45,15 @@ app.use((err, req, res, next) => {
 });
 
 var createAndSaveUser = require('./models.js').createAndSaveUser;
-app.post('/api/exercise/new-user', (req, res, next) => {
-  createAndSaveUser(data, function())
+router.post('/api/exercise/new-user', (req, res, next) => {
+  createAndSaveUser(req.body, function(err, data) {
+    if(err) { return (next(err)); }
+    if(!data) {
+      console.log('Missing `done()` argument');
+      return next({message: 'Missing callback argument'});
+    }
+    res.json(data);
+  })
   next();
 });
 
