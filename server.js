@@ -41,6 +41,10 @@ app.use((err, req, res, next) => {
   }
   res.status(errCode).type('txt')
     .send(errMessage)
+});
+
+app.post('/api/exercise/new-user', (req, res) => {
+  
 })
 
 const listener = app.listen(process.env.PORT || 3000, () => {
