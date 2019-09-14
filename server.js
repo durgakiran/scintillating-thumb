@@ -43,10 +43,15 @@ app.use((err, req, res, next) => {
     .send(errMessage)
 });
 
-app.post('/api/exercise/new-user', (req, res) => {
-  
-})
+var createAndSaveUser = require('./models.js').createAndSaveUser;
+app.post('/api/exercise/new-user', (req, res, next) => {
+  createAndSaveUser(data, function())
+  next();
+});
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
+
+
+
