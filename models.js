@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const schema  = mongoose.Schema;
 
 let User = new schema({
-  "username": {"type": String, "required": true}
+  "username": {"type": String, "required": true, "unique": true, maxlength: [20, 'username too long']}
 });
 
 let userModel = mongoose.model('User', User);

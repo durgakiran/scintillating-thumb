@@ -21,9 +21,7 @@ app.get('/', (req, res) => {
 
 
 // Not found middleware
-app.use((req, res, next) => {
-  return next({status: 404, message: 'not found'})
-})
+
 
 // Error Handling middleware
 app.use((err, req, res, next) => {
@@ -57,6 +55,9 @@ router.post('/api/exercise/new-user', (req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  return next({status: 404, message: 'not found'})
+})
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
