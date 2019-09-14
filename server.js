@@ -45,11 +45,15 @@ app.use((err, req, res, next) => {
 var createAndSaveUser = require('./models.js').createAndSaveUser;
 router.post('/api/exercise/new-user', (req, res, next) => {
   createAndSaveUser(req.body, function(err, data) {
-    if(err) { return (next(err)); }
+    if(err) {
+      console.log(err);
+      return (next(err)); 
+    }
     if(!data) {
       console.log('Missing `done()` argument');
       return next({message: 'Missing callback argument'});
     }
+    console.log('daas' + JSON.stringify(data));
     res.json(data);
   })
   next();
