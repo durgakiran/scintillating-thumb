@@ -26,7 +26,9 @@ app.get('/', (req, res) => {
 
 
 var createAndSaveUser = require('./models.js').createAndSaveUser;
+
 router.post('/api/exercise/new-user', (req, res, next) => {
+  console.log(req.body);
   createAndSaveUser(req.body, function(err, data) {
     if(err) {
       //console.log("error happened" + err);
@@ -46,29 +48,10 @@ router.post('/api/exercise/new-user', (req, res, next) => {
 
 
 // Error Handling middleware
-app.use((err, req, res, next) => {
-  let errCode, errMessage
-  console.log(err);
-  if (err.errors) {
-    // mongoose validation error
-    errCode = 400 // bad request
-    const keys = Object.keys(err.errors)
-    // report the first validation error
-    errMessage = err.errors[keys[0]].message
-  } else {
-    // generic or custom error
-    errCode = err.status || 500
-    errMessage = err.message || 'Internal Server Error'
-  }
-  res.status(errCode).type('txt')
-    .send(errMessage)
-});
 
 
 
-app.use((req, res, next) => {
-  return next({status: 404, message: 'not found'})
-});
+
 
 
 
