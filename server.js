@@ -23,10 +23,32 @@ app.get('/', (req, res) => {
 // Not found middleware
 
 
+
+
+var createAndSaveUser = require('./models.js').createAndSaveUser;
+router.post('/api/exercise/new-user', (req, res, next) => {
+  createAndSaveUser(req.body, function(err, data) {
+    if(err) {
+      //console.log("error happened" + err);
+      return (next(err)); 
+    }
+    if(!data) {
+      console.log('Missing `done()` argument');
+      return next({message: 'Missing callback argument'});
+    }
+    //console.log('daas' + JSON.stringify(data));
+    res.json(data);
+  })
+  next();
+});
+
+
+
+
 // Error Handling middleware
 app.use((err, req, res, next) => {
   let errCode, errMessage
-
+  console.log(err);
   if (err.errors) {
     // mongoose validation error
     errCode = 400 // bad request
@@ -42,26 +64,14 @@ app.use((err, req, res, next) => {
     .send(errMessage)
 });
 
-var createAndSaveUser = require('./models.js').createAndSaveUser;
-router.post('/api/exercise/new-user', (req, res, next) => {
-  createAndSaveUser(req.body, function(err, data) {
-    if(err) {
-      console.log(err);
-      return (next(err)); 
-    }
-    if(!data) {
-      console.log('Missing `done()` argument');
-      return next({message: 'Missing callback argument'});
-    }
-    console.log('daas' + JSON.stringify(data));
-    res.json(data);
-  })
-  next();
-});
+
 
 app.use((req, res, next) => {
   return next({status: 404, message: 'not found'})
-})
+});
+
+
+
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
