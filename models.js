@@ -11,8 +11,11 @@ let userModel = mongoose.model('User', User);
 
 
 var createAndSaveUser = function(data, done){
-  let user = new User(data);
+  console.log(data);
+  let user = new userModel(data);
+  console.log(user);
   user.save(function (err, data) {
+    console.log('save success!');
     done(null , data);
   });
 }

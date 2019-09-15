@@ -19,9 +19,11 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
+app.use('/api/exercise', router)
+
 
 var createAndSaveUser = require('./models.js').createAndSaveUser;
-router.post('/api/exercise/new-user', (req, res, next) => {
+router.post('/new-user', (req, res, next) => {
   createAndSaveUser(req.body, function(err, data) {
     if(err) {
       //console.log("error happened" + err);
@@ -36,15 +38,6 @@ router.post('/api/exercise/new-user', (req, res, next) => {
   })
   next();
 });
-
-// Not found middleware
-app.use((req, res, next) => {
-  console.log(req);
-  return next({status: 404, message: 'not found'})
-});
-
-
-
 
 
 // Error Handling middleware
